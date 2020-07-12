@@ -1,22 +1,14 @@
 {
-  "name": "se_project",
-  "version": "1.0.0",
-  "description": "Student Activity Website",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/joseacb144/Student_Activity_Website.git"
-  },
-  "author": "Jose Chavez",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/joseacb144/Student_Activity_Website/issues"
-  },
-  "homepage": "https://github.com/joseacb144/Student_Activity_Website#readme",
+  "name": "student_portal",
+  "private": true,
   "dependencies": {
-    "express": "^4.17.1"
+    "@rails/actioncable": "^6.0.0",
+    "@rails/ujs": "^6.0.0",
+    "@rails/webpacker": "5.1.1",
+    "turbolinks": "^5.2.0"
+  },
+  "version": "0.1.0",
+  "devDependencies": {
+    "webpack-dev-server": "^3.11.0"
   }
 }
