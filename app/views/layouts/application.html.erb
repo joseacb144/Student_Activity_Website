@@ -11,7 +11,32 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body class="bg-gradient-info">
+
+   <div class="container">
     <%= yield %>
+  </div>
+     <div class="container"> 
+      <% if !notice.nil? %>
+      <div class="alert alert-info alert-dismissible">
+          <a href="#" id="notice" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <%= notice.html_safe.to_s unless notice.blank? %>
+        </div>
+    <% end %>
+
+    <% if !flash[:recaptcha_error].nil? %>
+      <div  class="alert alert-warning" role="alert">
+          <a href="#" id="warning" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <%= flash[:recaptcha_error].html_safe unless flash[:recaptcha_error].blank? %>
+      </div>
+    <% end %>
+
+      <% if !alert.nil? %>
+      <div  class="alert alert-warning" role="alert">
+          <a href="#" id="warning" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <%= alert.html_safe.to_s unless alert.blank? %>
+      </div>
+    <% end %>
+   </div>
   </body>
 </html>

@@ -1,12 +1,15 @@
 class StudentsController <  Devise::RegistrationsController
-
   layout 'main'
-  before_action :authenticate_student!, :except =>[:show]
+  before_action :authenticate_student!
 
   # GET /students
   # GET /students.json
   def index
-    
+    logger.info "landed index"
+    if !student_signed_in?
+      flash[:notice] ="Please Sign in."
+      redirect_to root_path
+    end
   end
 
   # GET /students/1

@@ -1,6 +1,6 @@
 <%= render "devise/shared/error_messages", resource: resource %>
 
-<div class="container text-center">
+<div class="text-center">
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), class:"form-signin") do |f| %>
     <%= image_tag "main_logo", class:"mb-4", width:"72", height:"72" %>
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
@@ -18,22 +18,22 @@
        <% end %>
       </label>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-
+    <%=  f.submit "Sign in", class:"btn btn-lg btn-primary btn-block" %>
+  <% end %>
     <div class="container help">
       <div class="row">
         <div class="col">
-          <%= f.submit "Sign Up" %>
+          <%= button_to "Sign Up", new_student_registration_path, method: "get" %>
 
         </div>
         <div class="col">
-          <a href="#">Forgot Password</a>
+          <%= link_to "Forgot Password", new_student_password_path %>
         </div>
       </div>
 
 
-      <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
-  <% end %>
+      <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
+
   </div>
 </div>
 
