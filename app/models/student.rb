@@ -40,4 +40,7 @@ class Student
   field :state, type: String
   field :zip_code, type: String
 
+  field :created_at, type: Time
+  field :updated_at, type: Time
+
 end

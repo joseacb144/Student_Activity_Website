@@ -15,6 +15,7 @@ class StudentsController <  Devise::RegistrationsController
   # GET /students/1
   # GET /students/1.json
   def show
+    @student = Student.find(params[:id])
   end
 
   # GET /students/1/edit
@@ -38,6 +39,27 @@ class StudentsController <  Devise::RegistrationsController
   # DELETE /students/1.json
   def destroy
     super
+  end
+
+  def search
+
+  end
+
+  def find
+
+     if params[:query]
+      query = params[:query].html_safe
+      @users = Student.any_of({ :first_name => /#{query}/ }, {:last_name => /#{query}/ } )
+
+      logger.info "found "+@users.size.to_s
+    end
+
+    respond_to do |format|
+      format.json {@users}
+      format.js { render json: @users.to_json}
+      format.html{ render :inline => "<br>"}
+    end
+
   end
 
   protected

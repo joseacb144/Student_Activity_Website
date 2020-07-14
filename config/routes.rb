@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   devise_scope :student do
   	get '/students/index' => "students#index", as: :student_root
     get '/students/show/:id' => "students#show", as: :student_show
-    get '/usstudentsers/search_student' => "students#find", as: :student_search
+    get '/students/search' => "students#search", as: :student_search
+    post '/students/find' => "students#find", as: :student_find
   end
 
 

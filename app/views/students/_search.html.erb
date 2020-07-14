@@ -1,0 +1,59 @@
+<div class="text-center">
+    
+  <input type="field" id="query" value="<%= params[:query] %>" class="form-control mr-sm-2" placeholder="Search">
+
+  <div class="results">
+	  	<table id="content" class="table">
+	    <thead>
+	    <tr>
+	      <th scope="col" >Name</th>
+	      <th scope="col">Address</th>
+	      <th scope="col">URL</th>
+	    </tr>
+	  </thead>
+	  <tbody >
+	  </tbody>
+
+
+	</table>
+  </div>
+
+ </div>
+
+ <script type="text/javascript">
+ 	$("#query").change( function(){
+	 	$.ajax({
+	    url:"/students/find.json",
+	    type: "post",
+	    dataType: 'json',
+	    data: JSON.stringify({"query" : this.value}),
+	    headers: {
+			  'Content-type': 'application/json',
+			  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+			  },
+	    success: function (data) {
+            console.log(data);
+			var event_data = '';
+            $.each(data, function(index, value){
+            	if(value.length >0){
+	                event_data += '<tr scope="row">';
+	                event_data += '<td>'+value[0].last_name+", " +value[0].first_name+'</td>';
+	                event_data += '<td>'+value[0].address+'</td>';
+	                event_data += '<td><a href="'+value[0].url+'"> View </a></td>';
+	                event_data += '</tr>';
+	            }
+	            else
+	            	alert("No results found.");
+            });
+            $("#content > tbody").html(event_data);
+
+            },
+            error: function (xhr) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert('errr------'+err.Message);
+            }
+
+		});
+	});
+
+ </script>
