@@ -1,6 +1,6 @@
-  <%= render "devise/shared/error_messages", resource: resource %>
+<%= render "devise/shared/error_messages", resource: resource %>
 
-<div class="text-center">
+<div class="container text-center">
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), class:"form-signin") do |f| %>
     <%= image_tag "main_logo", class:"mb-4", width:"72", height:"72" %>
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
@@ -34,4 +34,6 @@
 
       <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
   <% end %>
+  </div>
 </div>
+

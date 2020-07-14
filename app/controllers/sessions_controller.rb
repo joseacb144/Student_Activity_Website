@@ -7,10 +7,8 @@ class SessionsController <  Devise::SessionsController
     clean_up_passwords(resource)
     yield resource if block_given?
     #
-    if request.xhr?  #if an ajax request...
-      logger.info "remote"
-      flash[:notice] = nil
-    end
+    logger.info "remote"
+
  
      respond_with(resource, serialize_options(resource))
     
@@ -21,12 +19,16 @@ class SessionsController <  Devise::SessionsController
     clean_up_passwords(resource)
     yield resource if block_given?
     #
-    if request.xhr?  #if an ajax request...
-      logger.info "remote"
-      flash[:notice] = nil
-    end
+
+    logger.info "remote"
+    
  
      respond_with(resource, serialize_options(resource))
+  end
+
+  def create
+    super
+    logger.info "inside create"
   end
 
   def about
