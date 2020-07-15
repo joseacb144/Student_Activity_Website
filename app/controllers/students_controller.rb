@@ -47,9 +47,14 @@ class StudentsController <  Devise::RegistrationsController
 
   def find
 
-     if params[:query]
+     if params[:query] || params[:department]
       query = params[:query].html_safe
-      @users = Student.any_of({ :first_name => /#{query}/ }, {:last_name => /#{query}/ } )
+      department = params[:department].html_safe
+      if !department.blank?
+        @users = Student.any_of({ :first_name => /#{query}/ }, {:last_name => /#{query}/ }).and({:department => /#{department}/ })
+      else
+        @users = Student.any_of({ :first_name => /#{query}/ }, {:last_name => /#{query}/ })
+      end
 
       logger.info "found "+@users.size.to_s
     end

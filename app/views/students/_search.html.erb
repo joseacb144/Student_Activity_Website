@@ -1,13 +1,17 @@
 <div class="text-center">
     
-  <input type="field" id="query" value="<%= params[:query] %>" class="form-control mr-sm-2" placeholder="Search">
+<input type="field" id="query" value="<%= params[:query] %>" class="form-control mr-sm-2" placeholder="Name">
+<input type="field" id="department" value="<%= params[:department] %>" class="form-control mr-sm-2" placeholder="Department">
+<input type="button" id="find" value="Find"> 
 
-  <div class="results">
+<div class="table-responsive">
 	  	<table id="content" class="table">
 	    <thead>
 	    <tr>
 	      <th scope="col" >Name</th>
-	      <th scope="col">Address</th>
+	      <th scope="col">Department</th>
+	      <th scope="col">Phone</th>
+	      <th scope="col">email</th>
 	      <th scope="col">URL</th>
 	    </tr>
 	  </thead>
@@ -21,12 +25,12 @@
  </div>
 
  <script type="text/javascript">
- 	$("#query").change( function(){
+ 	$("#find").click( function(){
 	 	$.ajax({
 	    url:"/students/find.json",
 	    type: "post",
 	    dataType: 'json',
-	    data: JSON.stringify({"query" : this.value}),
+	    data: JSON.stringify({"query" : $("#query").val(), "department": $("#department").val()}),
 	    headers: {
 			  'Content-type': 'application/json',
 			  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -36,11 +40,15 @@
 			var event_data = '';
             $.each(data, function(index, value){
             	if(value.length >0){
-	                event_data += '<tr scope="row">';
-	                event_data += '<td>'+value[0].last_name+", " +value[0].first_name+'</td>';
-	                event_data += '<td>'+value[0].address+'</td>';
-	                event_data += '<td><a href="'+value[0].url+'"> View </a></td>';
-	                event_data += '</tr>';
+            		for(i=0; i< value.length; i++){
+		                event_data += '<tr scope="row">';
+		                event_data += '<td>'+value[i].last_name+", " +value[i].first_name+'</td>';
+		                event_data += '<td>'+value[i].department+'</td>';
+	  	                event_data += '<td>'+value[i].phone+'</td>';
+		                event_data += '<td>'+value[i].email+'</td>';
+		                event_data += '<td><a href="'+value[i].url+'"> View </a></td>';
+		                event_data += '</tr>';
+		             }
 	            }
 	            else
 	            	alert("No results found.");
