@@ -47,7 +47,7 @@
       </form> -->
       <% if student_signed_in? %>
           <%= button_to "Account", edit_student_registration_path(current_student), class:"btn btn-outline-success my-2 my-sm-0 log_out", :method=>"get" %> 
-          <% if current_student.purchases %>
+          <% if current_student.purchases && current_student.purchases.size > 0  %>
           |
           <%= button_to "Purchases", product_purchases_path(current_student.purchases.first), class:"btn btn-outline-success my-2 my-sm-0 ", :method=>"get" %> 
           <% end %>
