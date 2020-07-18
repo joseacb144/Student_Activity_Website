@@ -3,22 +3,22 @@
   <%= render "devise/shared/error_messages", resource: resource %>
  <div class="field">
     <%= form.label :email %>
-    <%= form.email_field :email, autofocus: true, autocomplete: "email", required:"required" %>
+    <%= form.email_field :email, autofocus: true, autocomplete: "email", required:"required", class:"form-control" %>
   </div>
 
   <div class="field">
     <%= form.label :first_name %>
-    <%= form.text_field :first_name, required:"required" %>
+    <%= form.text_field :first_name, required:"required", class:"form-control" %>
   </div>
 
   <div class="field">
     <%= form.label :last_name %>
-    <%= form.text_field :last_name, required:"required" %>
+    <%= form.text_field :last_name, required:"required", class:"form-control" %>
   </div>
 
     <div class="field">
     <%= form.label :phone %>
-    <%= form.text_field :phone %>
+    <%= form.text_field :phone, class:"form-control" %>
   </div>
 
   <%= form.hidden_field :department, :value=>"Student" %>
@@ -26,22 +26,22 @@
 
   <div class="field">
     <%= form.label :address %>
-    <%= form.text_field :address %>
+    <%= form.text_field :address, class:"form-control" %>
   </div>
 
   <div class="field">
     <%= form.label :city %>
-    <%= form.text_field :city %>
+    <%= form.text_field :city, class:"form-control" %>
   </div>
 
   <div class="field">
     <%= form.label :state %>
-    <%= form.text_field :state %>
+    <%= form.text_field :state, class:"form-control" %>
   </div>
 
   <div class="field">
     <%= form.label :zip_code %>
-    <%= form.text_field :zip_code %>
+    <%= form.text_field :zip_code, class:"form-control" %>
   </div>
  
  
@@ -50,10 +50,54 @@
     <% if @minimum_password_length %>
     <em>(<%= @minimum_password_length %> characters minimum)</em>
     <% end %><br />
-    <%= form.password_field :password, autocomplete: "new-password", required:"required" %>
+    <% if form.object.new_record? %>
+    <%= form.password_field :password, autocomplete: "new-password", required:"required", class:"form-control" %>
+    <% else  %>
+    <%= form.password_field :password, autocomplete: "new-password", class:"form-control" %>
+    <% end %>
   </div>
 
+  <!-- roomate fields -->
+  <h3> Roomate settings</h3>
+    <% if !form.object.new_record? %>
+    <hr/>
+    <div class="field">
+      <%= form.label "Looking for roomate?" %>
+      <%= form.check_box :roomate_flg, class:"form-control" %>
+    </div>
 
+    <div class="field">
+      <%= form.label :gender %>
+      <%= form.select :gender, Student::GENDER.map {|obj| [obj, obj]}, class:"form-control"%>
+    </div>
+    <div class="field">
+      <%= form.label :lease_start_dt %>
+      <%= form.date_field :lease_start_dt, class:"form-control" %>
+    </div>
+    <div class="field">
+      <%= form.label :lease_end_dt %>
+      <%= form.date_field :lease_end_dt, class:"form-control" %>
+    </div>
+     <div class="field">
+    <%= form.label :shared_cost %>
+    <%= form.number_field :shared_cost, step: :any, class:"form-control"  %> <%= number_to_currency(form.object.shared_cost) %>
+  </div>
+
+     <!-- credit card fields -->
+  <h3> Payment settings</h3>
+     <hr/>
+    <div class="field">
+      <%= form.label "Credit card number" %>
+      <%= form.text_field :credit_card, class:"form-control" %>
+    </div>
+    <div class="field">
+      <%= form.label "Expitation" %>
+      <%= form.text_field :cc_expiration, class:"form-control cc-exp", placeholder:"MM / YY"  %>
+      <%= form.label "CCV code" %>
+      <%= form.text_field :cc_ccv, class:"form-control" %>
+    </div>
+  <% end %>
+  <hr/>
   <div class="actions">
     <%= form.submit %>
   </div>

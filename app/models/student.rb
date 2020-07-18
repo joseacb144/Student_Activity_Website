@@ -1,5 +1,7 @@
 class Student
   include Mongoid::Document
+
+  has_many :purchases
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -44,7 +46,24 @@ class Student
   field :department, type: String
   field :phone, type: String
 
-  field :created_at, type: Time
-  field :updated_at, type: Time
+  #spefecific fields for roomate
+  field :roomate_flg, type:Mongoid::Boolean
+  field :gender, type:String
+  field :lease_start_dt, type: Date
+  field :lease_end_dt, type:Date
+  field :shared_cost, type:BigDecimal
+  GENDER = ["Male", "Female"]
+
+  field :created_at, type: DateTime
+  field :updated_at, type: DateTime
+  #credit card fields
+    field :credit_card, type: String
+    field :cc_expiration, type: String
+    field :cc_ccv, type: String
+
+
+    def has_credit_card
+      return self.credit_card && self.cc_expiration && self.cc_ccv
+    end
 
 end

@@ -25,6 +25,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'ruby-json'
 gem "bootstrap", ">= 4.3.1"
+gem 'rqrcode'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false

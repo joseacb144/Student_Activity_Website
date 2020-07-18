@@ -1,0 +1,26 @@
+<div class="container">
+<p>
+  <h3><%= @purchase.product.name %></h3> <h5> <%= @purchase.product.type %></h5>
+</p>
+
+<p>
+  <strong>Expiration:</strong>
+  <%= @purchase.val_end_dt.strftime(t'date.format.short') if @purchase.val_end_dt  %>
+</p>
+
+<p>
+  <strong>Total paid:</strong>
+  <%= @purchase.total_paid %>
+</p>
+
+<p>
+  <strong>Code:</strong>
+  <div class="d-flex justify-content-center">
+    <%= @svg.html_safe %> 
+  </div>
+</p>
+
+<%= link_to 'Back', product_purchases_path %>
+
+
+</div>

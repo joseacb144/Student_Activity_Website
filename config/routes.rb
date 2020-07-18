@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  
+  resources :products do 
+  		resources :purchases
+  end
+  resources :books
   devise_for :students, :controllers => { :registrations => "students", :sessions=>'sessions'}
   devise_scope :student do
   	get '/students/index' => "students#index", as: :student_root

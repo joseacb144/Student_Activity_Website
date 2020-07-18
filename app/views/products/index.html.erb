@@ -1,0 +1,47 @@
+<h1><%= @type.humanize %> </h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <% (@type.constantize.attribute_names - Product.attribute_names).each do |val| %>
+        <th><%= val.humanize %></th>
+      <% end %>
+      <th>Discount</th>
+      <th>Price</th>
+      <th> Purchase </th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @products.each do |product| %>
+      <tr>
+     <% if product.type == "Book" %>
+          <td><%= product.title %></td>
+          <td><%= product.author %></td>
+          <td><%= product.isbn %></td>
+          <td><%= product.library_location %></td>
+          <td><%= product.book_store %></td>
+        <%end %>
+        <% if product.type == "Meal" %>
+          <td><%= product.plan %></td>
+          <td><%= product.description %></td>
+        <%end %>
+        <% if product.type == "BusTicket" %>
+          <td><%= product.zone %></td>
+        <%end %>
+
+        <td><%= number_to_percentage(product.discount*100, precision: 0) if product.discount %></td>
+        <td><%= number_to_currency(product.price) %></td>
+        <td><%= link_to 'Buy', new_product_purchase_path(product) %></td>
+        <td><%= link_to 'Show', product_url(product) %></td>
+        <td><%= link_to 'Edit', edit_product_path(product) %></td>
+        <td><%= link_to 'Destroy', product_path(product), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Product', new_product_path %>

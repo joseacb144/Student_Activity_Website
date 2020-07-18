@@ -1,0 +1,29 @@
+<h1>Purchases</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Expiration</th>
+      <th>Total paid</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @purchases.each do |purchase| %>
+      <tr>
+        <td><%= purchase.product.type %> </td>
+        <td><%= purchase.product.name %> </td>
+        <td><%= purchase.val_end_dt.strftime(t'date.format.short') if purchase.val_end_dt %></td>
+        <td><%= number_to_currency(purchase.total_paid) %></td>
+        <td><%= link_to 'Show', product_purchase_path(purchase.product,purchase) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Back', student_root_path %>

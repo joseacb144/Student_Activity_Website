@@ -1,0 +1,40 @@
+<%= form_for([@product.becomes(Product),@purchase]) do |form| %>
+  <% if purchase.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@purchase.errors.count, "error") %> prohibited this purchase from being saved:</h2>
+
+      <ul>
+        <% @purchase.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+      <p><%= @product.type.humanize %>: <%= @product.name %></p>
+  </div>
+
+  
+    <%= form.hidden_field :val_start_dt %>
+
+
+  <div class="field">
+    <%= form.label "Expiration Date time:" %>
+    <%= form.object.val_end_dt.strftime(t'date.format.short')  if form.object.val_end_dt %>
+    <%= form.hidden_field :val_end_dt %>
+  </div>
+
+  <div class="field">
+    <%= form.label "Total" %>
+    <%= form.object.total_paid %>
+    <%= form.hidden_field :total_paid %>
+  </div>
+
+      <%= form.hidden_field :product_id %>
+      <%= form.hidden_field :student_id %>
+
+  <div class="actions">
+    <%= form.submit "Buy"%>
+  </div>
+<% end %>

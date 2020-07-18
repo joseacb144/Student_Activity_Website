@@ -1,0 +1,68 @@
+<%= form_for(@product.becomes(Product), local: true) do |form| %>
+  <% form.object = @product.becomes(@product.class) %>
+  <% if product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+
+      <ul>
+        <% product.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+   <div class="field">
+    <%= form.label :type %>
+    <% if form.object.new_record? %>
+      <%= form.select :type, Product.types.map {|r| [r.humanize, r.camelcase]}, {} %> 
+      <% else %>
+      <%= form.select :type, Product.types.map {|r| [r.humanize, r.camelcase]}, {}, disabled: true %> 
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= form.label :validity_months %>
+    <%= form.number_field :validity_months %>
+  </div>
+
+  <div class="field">
+    <%= form.label :discount %>
+    <%= form.text_field :discount %>
+  </div>
+
+  <div class="field">
+    <%= form.label :price %>
+    <%= form.text_field :price %>
+  </div>
+
+
+   <% if @type != "Product" %>
+        <%= form.hidden_field :type, value: @type %>
+  <% end %>
+
+<hr>
+
+
+<% if form.object.type =="Book" %>
+        <div class="row" id='bookDiv' style="display: block;" >
+          <%= render "book", :form=> form %>
+        </div>
+<% end %>
+<% if form.object.type =="Meal" %>
+        <div class="row" id='mealDiv' style="display: block;" >
+          <%= render "meal", :form=> form %>
+        </div>
+<% end %>
+<% if form.object.type =="BusTicket" %>
+        <div class="row" id='busDiv' style="display: block;" >
+          <%= render "bus_ticket", :form=> form %>
+        </div>
+<% end %>
+
+
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
