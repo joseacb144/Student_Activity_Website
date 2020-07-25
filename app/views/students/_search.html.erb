@@ -1,14 +1,32 @@
 <div class="text-center">
+
+<% if @type =='student' %>
     
 <input type="field" id="query" value="<%= params[:query] %>" class="form-control mr-sm-2" placeholder="Name">
 <input type="field" id="department" value="<%= params[:department] %>" class="form-control mr-sm-2" placeholder="Department">
+
+<% end  %>
+
+<% if @type =='roomate' %>
+
+<input type="field" id="move_in_date" value="<%= params[:move_in_date] %>" class="form-control mr-sm-2" placeholder="MoveIn Date"
+data-provide= "datepicker" date-format= 'yyyy/mm/dd' date-autoclose= 'true' date-today-btn= 'linked' date-today-highlight= 'true'>
+<select id="gender" class="form-control mr-sm-2" >
+	<option value=""></option>
+	<option value="Male">Male</option>
+  <option value="Female">Female</option>
+ </select>
+<input  id="price" value="<%= params[:price] %>" class="form-control mr-sm-2" placeholder="Shared Cost">
+
+<% end %>
+
 <input type="button" id="find" value="Find"> 
 
 <div class="table-responsive">
 	  	<table id="content" class="table">
 	    <thead>
 	    <tr>
-	      <th scope="col" >Name</th>
+	      <th scope="col">Name</th>
 	      <th scope="col">Department</th>
 	      <th scope="col">Phone</th>
 	      <th scope="col">email</th>
@@ -26,11 +44,16 @@
 
  <script type="text/javascript">
  	$("#find").click( function(){
+ 		<% if @type=='student' %>
+ 		var parameters = JSON.stringify({"query" : $("#query").val(), "department": $("#department").val()});
+ 		<% else %>
+ 		var parameters = JSON.stringify({"move_in_date" : $("#move_in_date").val(), "gender": $("#gender").val(), "price": $("#price").val()});
+ 		<% end %>
 	 	$.ajax({
-	    url:"/students/find.json",
+	    url:"/students/<%= @type %>_search.json",
 	    type: "post",
 	    dataType: 'json',
-	    data: JSON.stringify({"query" : $("#query").val(), "department": $("#department").val()}),
+	    data: parameters,
 	    headers: {
 			  'Content-type': 'application/json',
 			  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),

@@ -39,6 +39,11 @@ class PurchasesController < ApplicationController
       @total_paid = @product.price 
     end
 
+    if @product.type == "Book" && current_student.book_spent_total && current_student.book_spent_total >200
+        @elegible_book_discount =  true
+
+    end
+
     if @product.validity_months &&  @product.validity_months > 0
       @val_start_dt = Time.now
       @val_end_dt = Time.now + @product.validity_months.months
@@ -64,6 +69,13 @@ class PurchasesController < ApplicationController
 
       respond_to do |format|
         if @purchase.save
+          if @purchase.use_book_discount
+            current_student.book_spent_total=@purchase.total_paid
+            current_student.save
+          else
+            current_student.book_spent_total+=@purchase.total_paid
+            current_student.save
+          end
           format.html { redirect_to product_purchase_url(@product, @purchase), notice: 'Purchase was successfully created.' }
           format.json { render :show, status: :created, location: @purchase }
         else
@@ -93,6 +105,6 @@ class PurchasesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def purchases_params
-      params.require(:purchase).permit(:val_start_dt, :val_end_dt, :total_paid, :product_id, :student_id)
+      params.require(:purchase).permit(:val_start_dt, :val_end_dt, :total_paid, :product_id, :student_id, :use_book_discount)
     end
 end

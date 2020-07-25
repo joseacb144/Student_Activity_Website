@@ -21,12 +21,12 @@
         <div class="col-md-4">
           <h2>People Search</h2>
           <p>Faculty-Staff & Student Directory.</p>
-          <p><%= link_to raw("View details &raquo;"), student_search_path, remote:true, class:"btn btn-secondary", role:"button" %></p>
+          <p><%= link_to raw("View details &raquo;"), search_path(:search_type =>'student'), remote:true, class:"btn btn-secondary", role:"button" %></p>
         </div>
         <div class="col-md-4">
           <h2>Roomate Finder</h2>
           <p>Find a roommate that meets your requirements.</p>
-          <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+          <p><%= link_to raw("View details &raquo;"), search_path(:search_type =>'roomate'), remote:true, class:"btn btn-secondary", role:"button" %></p>
         </div>
       </div>
 
@@ -51,7 +51,7 @@
         <div class="col-md-4">
           <h2>Campus Events</h2>
           <p>Stay informed with campus and sporting events!</p>
-          <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-secondary" href="/events/" role="button">View details &raquo;</a></p>
         </div>
       </div>
 

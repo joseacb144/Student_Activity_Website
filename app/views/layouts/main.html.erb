@@ -11,6 +11,7 @@
     <%= stylesheet_link_tag 'home_styles', media: 'all', 'data-turbolinks-track': 'reload' %>
 
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= Gon::Base.render_data %>
 </head>
 
 <body>
@@ -84,7 +85,7 @@
   </div>
                    <!-- myModal -->
           <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="myModalTitle">Search</h5>

@@ -27,14 +27,41 @@
 
   <div class="field">
     <%= form.label "Total" %>
-    <%= form.object.total_paid %>
+    <span id="total_field" ><strong>$<%= form.object.total_paid %></strong></span>
     <%= form.hidden_field :total_paid %>
   </div>
 
       <%= form.hidden_field :product_id %>
       <%= form.hidden_field :student_id %>
 
+    <% if @elegible_book_discount %>
+      <div class="field"> <lablel><strong> Use 10% discount </strong></lablel>
+        <%= form.check_box :use_book_discount, class:"form-control" %> </div>
+    <% end %>
+
   <div class="actions">
-    <%= form.submit "Buy"%>
+    <%= form.submit "Buy", "data-confirm":"Ready to Buy?"%>
   </div>
 <% end %>
+<script type="text/javascript">
+  var total = $('#purchase_total_paid').val();
+  $('#purchase_use_book_discount').change(function(){
+
+    console.log($('#purchase_total_paid').val());
+    if( this.checked ) {
+      val = $('#purchase_total_paid').val();
+      val = val - (val * 0.10)
+      $('#total_field').html('<strong>$' + val.toFixed(2) + '</strong> ');
+      $('#purchase_total_paid').val(val.toFixed(2));
+    }
+    else {
+      $('#total_field').html('<strong>$' + total + '</strong> ');
+      $('#purchase_total_paid').val(total);
+      }
+
+  });
+
+
+</script>
+
+

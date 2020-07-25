@@ -43,9 +43,13 @@ class StudentsController <  Devise::RegistrationsController
 
   def search
 
+    logger.info "Parameter "+ params[:search_type].to_s
+
+    @type = params[:search_type].to_s
+
   end
 
-  def find
+  def student_search
 
      if params[:query] || params[:department]
       query = params[:query].html_safe
@@ -60,6 +64,33 @@ class StudentsController <  Devise::RegistrationsController
     end
 
     respond_to do |format|
+      format.json {@users}
+      format.js { render json: @users.to_json}
+      format.html{ render :inline => "<br>"}
+    end
+
+  end
+
+  def roomate_search
+
+  if params[:move_in_date] || params[:gender] || params[:price]
+    @users = Student.where(:roomate_flg => 'true')
+    move_in_date = params[:move_in_date].html_safe
+    if !move_in_date.blank? 
+      @users = @users.where({:lease_start_dt => { :$lte => move_in_date }}).where({:lease_end_dt => { :$gte => Date.strptime(move_in_date, '%m/%d/%Y') } })
+     end
+    if !params[:gender].blank?
+      @users = @users.where({:gender=> params[:gender].html_safe})
+    end
+    if !params[:price].blank?
+      price = params[:price].html_safe
+      threshold = 100
+      @users = @users.where({:shared_cost => { :$gte => (price.to_f - threshold)} }).where({ :shared_cost => { :$lte => (price.to_f + threshold) } })
+    end
+    logger.info "found "+@users.size.to_s
+  end
+
+   respond_to do |format|
       format.json {@users}
       format.js { render json: @users.to_json}
       format.html{ render :inline => "<br>"}

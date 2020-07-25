@@ -10,11 +10,11 @@
 
 <p>
   <strong>Total paid:</strong>
-  <%= @purchase.total_paid %>
+  <%= number_to_currency(@purchase.total_paid) %>
 </p>
 
 <p>
-  <strong>Code:</strong>
+  <strong>Use this code to claim your purchase</strong>
   <div class="d-flex justify-content-center">
     <%= @svg.html_safe %> 
   </div>

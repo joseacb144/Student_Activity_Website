@@ -1,5 +1,10 @@
+<% if @type == 'people' %>
 
+
+	$("#myModal").find(".modal-title").html("People Search");
+<% else %>
+	$("#myModal").find(".modal-title").html("Roomate Search");
+
+<% end %>
 $("#myModal").find(".modal-body").html("<%= j (render 'search') %>");
-$("#myModal").find(".modal-title").html("People Search");
-
 $("#myModal").modal();

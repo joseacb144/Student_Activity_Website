@@ -1,0 +1,89 @@
+<h1>Search Events</h1>
+
+<input type="field" id="start_dt" value="<%= params[:start_dt] %>" class="form-control mr-sm-2" placeholder="From Date"
+data-provide= "datepicker" date-format= 'yyyy/mm/dd' date-autoclose= 'true' date-today-btn= 'linked' date-today-highlight= 'true' required='true'>
+<input type="field" id="end_dt" value="<%= params[:end_dt] %>" class="form-control mr-sm-2" placeholder="To Date"
+data-provide= "datepicker" date-format= 'yyyy/mm/dd' date-autoclose= 'true' date-today-btn= 'linked' date-today-highlight= 'true'>
+
+<input type="button" id="find" value="Find"> 
+
+
+<br/>
+
+<div class="table-responsive">
+	<table class="table" id="content">
+	  <thead>
+	    <tr>
+	      <th>Title</th>
+	      <th>Address</th>
+	      <th>Starts</th>
+	      <th>Ends</th>
+	      <th>Status</th>
+	      <th colspan="2"></th>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+	   
+	  </tbody>
+	</table>
+</div>
+
+<%= link_to "Back", events_path %>
+
+<script type="text/javascript">
+ 	$("#find").click( function(event){
+
+ 		var parameters = JSON.stringify({"start_dt" : $("#start_dt").val(), "end_dt": $("#end_dt").val()});
+	 	$.ajax({
+	    url:"/events/events_search.json",
+	    type: "post",
+	    dataType: 'json',
+	    data: parameters,
+	    headers: {
+			  'Content-type': 'application/json',
+			  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+			  },
+	    success: function (data) {
+            console.log(data);
+			var event_data = '';
+            $.each(data, function(index, value){
+            	if(value.length >0){
+            		for(i=0; i< value.length; i++){
+		                event_data += '<tr scope="row">';
+		                event_data += '<td>'+value[i].title+'</td>';
+		                event_data += '<td>'+value[i].address+'</td>';
+	  	                event_data += '<td>'+new Date(value[i].start_dt).toLocaleDateString("en-US")+'</td>';
+		                event_data += '<td>'+new Date(value[i].end_dt).toLocaleDateString("en-US")+'</td>';
+		             	event_data += '<td>'+value[i].status+'</td>';
+		                event_data += '<td><a href="'+value[i].url+'"> View </a></td>';
+		                if(matchEvent(value[i].id.$oid))
+		                	event_data += '<td><form action="'+value[i].unattend+'" method="post" data-remote="true"><%= hidden_field_tag :authenticity_token, form_authenticity_token %><input type="hidden" id="event_id" value="'+value[i].id.$oid+'" ><input type="submit" name="Unattend" value="Unattend" data-confirm="Unattend this event?"></form>';
+		                else
+		             	event_data += '<td><form action="'+value[i].attend+'" method="post" data-remote="true"><%= hidden_field_tag :authenticity_token, form_authenticity_token %><input type="hidden" id="event_id" value="'+value[i].id.$oid+'" ><input type="submit" name="Attend" value="Attend" data-confirm="Attend this event?"></form>';
+
+		                event_data += '</tr>';
+		             }
+	            }
+	            else
+	            	alert("No results found.");
+            });
+            $("#content > tbody").html(event_data);
+
+            },
+            error: function (xhr) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert('errr------'+err.Message);
+            }
+
+		});
+	});
+
+	function matchEvent(event_id){
+		var found=false;
+		gon.attending.forEach(element => {if(element._id.$oid == event_id) found=true });
+
+		return found;
+	}
+
+ </script>

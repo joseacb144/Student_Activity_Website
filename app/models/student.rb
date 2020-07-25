@@ -1,7 +1,13 @@
 class Student
   include Mongoid::Document
 
-  has_many :purchases
+
+  has_many :purchases, dependent: :delete_all
+
+  has_many :events, inverse_of: 'student',  dependent: :delete_all
+
+  #has_many :attending_events, inverse_of: 'attending_student', :class_name => 'Event'
+  has_and_belongs_to_many :attending_events, :class_name => 'Event', inverse_of: 'attending_students'
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -60,10 +66,16 @@ class Student
     field :credit_card, type: String
     field :cc_expiration, type: String
     field :cc_ccv, type: String
-
+    field :book_spent_total, type:BigDecimal
+  after_create :set_spent_total
 
     def has_credit_card
       return self.credit_card && self.cc_expiration && self.cc_ccv
+    end
+
+    def set_spent_total
+      self.book_spent_total =0
+      save
     end
 
 end

@@ -7,7 +7,7 @@ class Purchase
  field :val_end_dt, type: DateTime
  field :code, type: String
  field :total_paid, type: BigDecimal
-
+ field :use_book_discount, type:Mongoid::Boolean
  after_create :generate_code
 
  

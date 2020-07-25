@@ -1,0 +1,60 @@
+
+
+<p>
+  <h3><%= @event.title %></h3>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @event.description %>
+</p>
+
+<p>
+  <strong>Shedule :</strong>
+  <%= @event.start_dt.strftime(@dateFormat) if @event.start_dt %> - 
+  <%= @event.end_dt.strftime(@dateFormat) if @event.end_dt %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @event.address %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @event.status.humanize %>
+</p>
+
+<p>
+  <strong>Total Attending:</strong>
+  <%= @event.attending_students.size %>
+</p>
+
+<p>
+
+  <% if @already_attending %>
+<form action="<%= event_unattend_event_path(@event) %>" method="post" data-remote="true">
+ <input type="hidden" id="event_id" value="<%= @event.id %>" >
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <input type="submit" name="Unattend" value="Unattend" data-confirm="Unattend this event?">
+</form>
+
+<% else %>
+
+  <form action="<%= event_attend_event_path(@event,  format: :js) %>" method="post" data-remote="true">
+   <input type="hidden" id="event_id" value="<%= @event.id %>" >
+ <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <input type="submit" name="Attend" value="Attend" data-confirm="Attend this event?">
+</form>
+
+<% end %>
+</p>
+
+<p>
+  <strong>For more info. reach out to:</strong>
+  <% student_name = @event.student.last_name.concat(",", @event.student.first_name) %>
+  <%= link_to student_name, student_show_path(@event.student) %>
+  </p>
+
+<%= link_to 'Back', events_path %>
+

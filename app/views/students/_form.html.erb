@@ -18,7 +18,10 @@
 
     <div class="field">
     <%= form.label :phone %>
-    <%= form.text_field :phone, class:"form-control" %>
+    <%= form.text_field :phone, :value=> number_to_phone(form.object.phone, area_code: true) ,class:"form-control", required:"required" %>
+    <% if form.object.phone %>
+      <% resource.phone = number_to_phone(form.object.phone, area_code: true) %>
+    <% end %>
   </div>
 
   <%= form.hidden_field :department, :value=>"Student" %>
@@ -72,11 +75,12 @@
     </div>
     <div class="field">
       <%= form.label :lease_start_dt %>
-      <%= form.date_field :lease_start_dt, class:"form-control" %>
+
+        <%= datepicker_field(form, :lease_start_dt) %>
     </div>
     <div class="field">
       <%= form.label :lease_end_dt %>
-      <%= form.date_field :lease_end_dt, class:"form-control" %>
+        <%= datepicker_field(form, :lease_end_dt) %>
     </div>
      <div class="field">
     <%= form.label :shared_cost %>
