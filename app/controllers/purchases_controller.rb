@@ -69,12 +69,14 @@ class PurchasesController < ApplicationController
 
       respond_to do |format|
         if @purchase.save
-          if @purchase.use_book_discount
-            current_student.book_spent_total=@purchase.total_paid
-            current_student.save
-          else
-            current_student.book_spent_total+=@purchase.total_paid
-            current_student.save
+          if @product.type == "Book"
+            if @purchase.use_book_discount
+              current_student.book_spent_total=@purchase.total_paid
+              current_student.save
+            else
+              current_student.book_spent_total+=@purchase.total_paid
+              current_student.save
+            end
           end
           format.html { redirect_to product_purchase_url(@product, @purchase), notice: 'Purchase was successfully created.' }
           format.json { render :show, status: :created, location: @purchase }
