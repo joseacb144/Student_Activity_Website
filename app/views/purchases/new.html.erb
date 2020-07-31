@@ -2,4 +2,4 @@
 
 <%= render 'form', purchase: @purchase %>
 
-<%= link_to 'Back', product_purchases_path %>
+<%= link_to 'Back', products_path(:type =>@product.type) %>

@@ -22,6 +22,37 @@ class ProductsController < ApplicationController
     end
   end
 
+
+  def search
+    respond_to do |format|
+      @products = type_class.books
+       if !params[:title].blank? || !params[:isbn].blank?  || !params[:author].blank?
+
+        if !params[:title].blank?
+          title = params[:title].html_safe
+          @products = @products.where(:title => /#{title}/)
+        end
+
+        if !params[:isbn].blank?
+          isbn = params[:isbn].html_safe
+           @products =@products.where(:isbn => /#{isbn}/)
+        end
+
+        if !params[:author].blank?
+          author = params[:author].html_safe
+           @products =@products.where(:author => /#{author}/)
+        end
+        
+
+        logger.info "Found "+@products.size.to_s
+      end
+     
+        format.json {@products}
+        format.js { render json: @products.to_json}
+        format.html{ render :inline => "<br>"}
+      end
+  end
+
   # GET /products/1
   # GET /products/1.json
   def show

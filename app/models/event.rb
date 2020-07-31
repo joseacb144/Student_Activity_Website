@@ -9,13 +9,13 @@ class Event
   field :address, type:String
   STATUS = ['active', 'inactive']
   TYPE = ['party', 'sports', 'general']
-  belongs_to :student, inverse_of: :events
+  belongs_to :student
   #belongs_to :attending_student, inverse_of: :attending_events,  optional: true, :class_name => 'Student', :foreign_key => 'attending_student_id'
   has_and_belongs_to_many :attending_students, :class_name => 'Student', inverse_of: :attending_events
   validates :end_dt, presence: true
   validates :start_dt, presence: true
   validate :date_validation_current
-   validate :date_validation_each
+  validate :date_validation_each
 
 
   def date_validation_each
@@ -28,7 +28,7 @@ class Event
 end
 
   def date_validation_current
-  if self[:start_dt] < DateTime.now || self[:end_dt] < DateTime.now
+  if self[:start_dt] < Date.today || self[:end_dt] < Date.today
     errors[:start_dt] << "must be greater Current Date"
     return false
   else

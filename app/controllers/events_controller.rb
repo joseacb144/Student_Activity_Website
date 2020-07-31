@@ -74,14 +74,16 @@ class EventsController < ApplicationController
   def attend_event
     logger.info "title "+@event.to_s
     current_student.attending_events.push(@event)
-    if current_student.save
+    @event.attending_students.push(current_student)
+
+    if current_student.save && @event.save
       logger.info "Events size "+current_student.attending_events.size.to_s
       flash[:notice]= "You are now attending "+@event.title
-      
     else
-      logger.info "Error saving " +@event.title
+      logger.info "Error Saving " +@event.title
+      logger.info "errors "+ current_student.errors.full_messages.to_s
      
-      flash[:warn]= "Error saving " +@event.title
+      flash[:alert]= "Error Saving " +@event.title
     end
     redirect_to events_path
 
@@ -90,12 +92,15 @@ class EventsController < ApplicationController
   def unattend_event
     
     current_student.attending_events.delete(@event)
-    if current_student.save
+    @event.attending_students.delete(current_student)
+
+    if current_student.save &&  @event.save
       logger.info "Events size "+current_student.attending_events.size.to_s
       flash[:notice]= "You are not attending  "+@event.title
     else
       logger.info "Error deleting " +@event.title
-      flash[:warn]= "Error deleting " +@event.title
+      logger.info "errors "+@event.errors.full_messages.to_s
+      flash[:alert]= "Error deleting " +@event.title
     end
 
     redirect_to events_path

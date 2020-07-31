@@ -1,6 +1,17 @@
 <h1><%= @type.humanize %> </h1>
 
-<table class="table">
+<% if @type =="Book" %>
+<div class="">
+  <input type="field" id="title" value="<%= params[:title] %>" class="form-control mr-sm-2" placeholder="Title">
+  <input type="field" id="author" value="<%= params[:author] %>" class="form-control mr-sm-2" placeholder="Author">
+  <input type="field" id="isbn" value="<%= params[:isbn] %>" class="form-control mr-sm-2" placeholder="ISBN">
+  <input type="hidden" id="type" value="<%= @type %>" class="form-control mr-sm-2" placeholder="ISBN">
+  <input type="button" id="find" value="Filter"> 
+
+</div>
+<% end %>
+
+<table class="table" id="content">
   <thead>
     <tr>
       <% (@type.constantize.attribute_names - Product.attribute_names).each do |val| %>
@@ -34,7 +45,7 @@
         <td><%= number_to_percentage(product.discount*100, precision: 0) if product.discount %></td>
         <td><%= number_to_currency(product.price) %></td>
         <td><%= link_to 'Buy', new_product_purchase_path(product) %></td>
-        <td><%= link_to 'Show', product_url(product) %></td>
+        <td><%= link_to 'View', product_url(product) %></td>
         <td><%= link_to 'Edit', edit_product_path(product) %></td>
         <td><%= link_to 'Destroy', product_path(product), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
@@ -45,3 +56,51 @@
 <br>
 
 <%= link_to 'New Product', new_product_path %>
+
+
+ <script type="text/javascript">
+  $("#find").click( function(){
+    var parameters = JSON.stringify({"title" : $("#title").val(), "author": $("#author").val(), "isbn": $("#isbn").val()});
+    $.ajax({
+      url:"/products/search.json",
+      type: "post",
+      dataType: 'json',
+      data: parameters,
+      headers: {
+        'Content-type': 'application/json',
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        },
+      success: function (data) {
+            console.log(data);
+      var event_data = '';
+            $.each(data, function(index, value){
+              if(value.length >0){
+                for(i=0; i< value.length; i++){
+                    event_data += '<tr scope="row">';
+                    event_data += '<td>'+value[i].title+'</td>';
+                    event_data += '<td>'+value[i].author+'</td>';
+                    event_data += '<td>'+value[i].isbn+'</td>';
+                    event_data += '<td>'+value[i].library_location+'</td>';
+                    event_data += '<td>'+value[i].book_store+'</td>';
+                    event_data += value[i].discount?'<td>'+parseFloat(value[i].discount * 100).toFixed(0)+"%"+'</td>':'<td></td>';
+                    event_data += '<td>$'+parseFloat(value[i].price).toFixed(2)+'</td>';
+                    event_data += '<td><a href="'+value[i].buy+'"> Buy </a></td>'
+                    event_data += '<td><a href="'+value[i].url+'"> View </a></td>';
+                    event_data += '</tr>';
+                 }
+              }
+              else
+                alert("No results found.");
+            });
+            $("#content > tbody").html(event_data);
+
+            },
+            error: function (xhr) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert('errr------'+err.Message);
+            }
+
+    });
+  });
+
+ </script>

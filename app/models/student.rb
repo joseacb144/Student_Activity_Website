@@ -4,10 +4,16 @@ class Student
 
   has_many :purchases, dependent: :delete_all
 
-  has_many :events, inverse_of: 'student',  dependent: :delete_all
+  has_many :events, dependent: :delete_all
+
+  has_many :polls, dependent: :delete_all
 
   #has_many :attending_events, inverse_of: 'attending_student', :class_name => 'Event'
-  has_and_belongs_to_many :attending_events, :class_name => 'Event', inverse_of: 'attending_students'
+  has_and_belongs_to_many :attending_events, :class_name => "Event", inverse_of: :attending_students
+
+  has_and_belongs_to_many :voting_polls, :class_name => "Poll", inverse_of: :voting_students
+
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
