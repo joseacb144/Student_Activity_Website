@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   
+  resources :polls do
+     post 'vote', on: :member
+  end
   resources :events do
   	    get 'search', on: :collection
   	    post 'events_search', on: :collection
@@ -8,6 +11,7 @@ Rails.application.routes.draw do
   end
 
   resources :products do 
+      post 'search', on: :collection
   		resources :purchases
   end
   resources :books
