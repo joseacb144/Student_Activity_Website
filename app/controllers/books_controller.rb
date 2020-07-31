@@ -4,13 +4,7 @@ class BooksController < ApplicationController
 
   # GET /books
   # GET /books.json
-  def search
-    respond_to do |format|
-      @books = Product.where(:type = "Book")
-      format.html { redirect_to @books, notice: 'Book was successfully created.' }
-      format.json { render :show, status: :created, location: @books }
-      end
-    end
+  def index
   end
 
   # GET /books/1
