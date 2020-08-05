@@ -32,43 +32,46 @@
 <br/>
 
 <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
-
-
 <br/>
 <%= link_to 'Back', student_root_path %>
 
 
 
 <script>
-$(document).on('turbolinks:load', loadFunction);
+$(document).on("turbolinks:load", loadFunction);
 
 function loadFunction() {
 
-var options = {
-  animationEnabled: true,
-  title: {
-    text: "Graph"
-  },
-  axisY: {
-    title: "Votes",
-    suffix: ""
-  },
-  axisX: {
-    title: "Candidates"
-  },
-  data: [{
-    type: "column",
-    yValueFormatString: "#,##0.0#"%"",
-    dataPoints: [
-     <% @poll.poll_votes.each do |vote| %>
-      { label: '<%= vote.name%>', y: <%= vote.count %> },  
-     <% end %> 
-    ]
-  }]
-};
-$("#chartContainer").CanvasJSChart(options);
+$.getScript( "https://canvasjs.com/assets/script/jquery-1.11.1.min.js", function( data, textStatus, jqxhr ) {
+  $.getScript( "https://canvasjs.com/assets/script/jquery.canvasjs.min.js", function( data, textStatus, jqxhr ) {
+    var options = {
+      animationEnabled: true,
+      title: {
+        text: "Graph"
+      },
+      axisY: {
+        title: "Votes",
+        suffix: ""
+      },
+      axisX: {
+        title: "Candidates"
+      },
+      data: [{
+        type: "column",
+        yValueFormatString: "#,##0.0#"%"",
+        dataPoints: [
+         <% @poll.poll_votes.each do |vote| %>
+          { label: '<%= vote.name%>', y: <%= vote.count %> },  
+         <% end %> 
+        ]
+      }]
+    };
+    $("#chartContainer").CanvasJSChart(options);
+  
+  });
+
+});
+
 
 }
 </script>

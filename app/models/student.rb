@@ -64,6 +64,8 @@ class Student
   field :lease_start_dt, type: Date
   field :lease_end_dt, type:Date
   field :shared_cost, type:BigDecimal
+  field :admin, type:Mongoid::Boolean
+
   GENDER = ["Male", "Female"]
 
   field :created_at, type: DateTime
