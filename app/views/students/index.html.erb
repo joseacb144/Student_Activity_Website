@@ -5,7 +5,7 @@
       <div class="container">
         <h1 class="display-3">Welcome <%= current_student.first_name %>!</h1>
         <p>In this student activity protal you can obtain information regarding events, textbooks, facutly or student. You can also purchase bus passes, meal plans, and textbooks.</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+        <p><a class="btn btn-primary btn-lg" href="#" onclick="show_terms(); return false;" role="button">Learn more &raquo;</a></p>
         <p> Please participate in our active polls <br/>
                <a class="btn btn-primary btn-lg" href="/polls/5f245e9158d42e19f8359db0" role="button">Vote &raquo;</a></p>
       </div>
@@ -62,3 +62,19 @@
     </div> <!-- /container -->
 
   </main>
+
+
+<script type="text/javascript">
+  function show_terms(){
+
+
+  $('#modal').html('');
+
+  $('#modal').load('/about.html');
+  document.getElementById('myModalTitle').innerHTML = "About Us";
+  
+  $('#myModal').modal('toggle');
+
+}
+
+</script>
